@@ -14,6 +14,7 @@ import com.example.jobservicepractice1.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val JobId = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
                     .build()
 
 // Define the job and its constraints.
-                val jobInfo = JobInfo.Builder(1, ComponentName(this@MainActivity, DummyDownloadJobService::class.java))
+                val jobInfo = JobInfo.Builder(JobId, ComponentName(this@MainActivity, DummyDownloadJobService::class.java))
                     .setUserInitiated(true)
                     .setRequiredNetwork(networkRequestBuilder)
                     .build()
@@ -35,6 +36,10 @@ class MainActivity : AppCompatActivity() {
 // Schedule the job.
                 val jobScheduler = this@MainActivity.getSystemService(JobScheduler::class.java)
                 jobScheduler.schedule(jobInfo)
+            }
+            stop.setOnClickListener {
+                val jobScheduler = this@MainActivity.getSystemService(JobScheduler::class.java)
+                jobScheduler.cancel(JobId)
             }
         }
 
