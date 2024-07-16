@@ -15,6 +15,7 @@ import com.example.jobservicepractice1.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val JobId = 1001
+    private val STORAGE_AVAILABLE_SIZE = (30 * 1024 * 1024).toLong()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
                 // Define network constraint for the job.
                 val networkRequestBuilder = NetworkRequest.Builder()
                     .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                    .addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
                     .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
                     .build()
 
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
                 val jobInfo = JobInfo.Builder(JobId, ComponentName(this@MainActivity, DummyDownloadJobService::class.java))
                     .setUserInitiated(true)
                     .setRequiredNetwork(networkRequestBuilder)
+                    .setEstimatedNetworkBytes(STORAGE_AVAILABLE_SIZE, STORAGE_AVAILABLE_SIZE)
                     .build()
 
 // Schedule the job.
